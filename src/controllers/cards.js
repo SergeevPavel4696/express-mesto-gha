@@ -43,16 +43,6 @@ const deleteLike = (req, res) => {
     });
 };
 
-const getCard = (req, res) => Card.findById(req.params.cardId)
-  .then((card) => res.status(200).send(card))
-  .catch((err) => {
-    if (err.name === 'CastError') {
-      res.status(404).send({ message: 'Карточка не найдена.' });
-    } else {
-      res.status(500).send({ message: 'Сервер не работает.' });
-    }
-  });
-
 const deleteCard = (req, res) => Card.findByIdAndRemove(req.params.cardId)
   .then((card) => res.status(200).send(card))
   .catch((err) => {
@@ -74,5 +64,5 @@ const getCards = (req, res) => Card.find({})
   });
 
 module.exports = {
-  createCard, addLike, deleteLike, getCard, deleteCard, getCards,
+  createCard, addLike, deleteLike, deleteCard, getCards,
 };
