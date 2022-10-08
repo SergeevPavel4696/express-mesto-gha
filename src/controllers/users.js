@@ -44,7 +44,12 @@ const updateUserAvatar = (req, res) => {
 };
 
 const getUser = (req, res) => User.findById(req.params.userId)
-  .then((user) => res.status(200).send(user))
+  .then((user) => {
+    if (user) {
+      return res.status(200).send(user);
+    }
+    return res.status(404).send({ message: 'Пользователь не найден.' });
+  })
   .catch((err) => {
     if (err.name === 'SomeErrorName' || err.name === 'CastError') {
       res.status(400).send({ message: 'Переданы некорректные данные.' });
