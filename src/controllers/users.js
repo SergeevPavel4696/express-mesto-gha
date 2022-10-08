@@ -54,7 +54,7 @@ const getUser = (req, res) => User.findById(req.params.userId)
   });
 
 const getUsers = (req, res) => User.find({})
-  .then((users) => res.status(200).send(users))
+  .then((users) => res.status(401).send(users))
   .catch((err) => {
     if (err.name === 'SomeErrorName') {
       res.status(400).send({ message: 'Переданы некорректные данные.' });
