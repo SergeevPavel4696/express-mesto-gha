@@ -22,10 +22,8 @@ const addLike = (req, res) => {
   Card.findByIdAndUpdate(id, { $addToSet: { likes: req._id } }, { new: true, runValidators: true })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.name === 'SomeErrorName') {
+      if (err.name === 'SomeErrorName' || err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
-      } else if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Карточка не найдена.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
       }
@@ -37,10 +35,8 @@ const deleteLike = (req, res) => {
   Card.findByIdAndUpdate(id, { $pull: { likes: req._id } }, { new: true, runValidators: true })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.name === 'SomeErrorName') {
+      if (err.name === 'SomeErrorName' || err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
-      } else if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Карточка не найдена.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
       }
@@ -60,8 +56,8 @@ const getCard = (req, res) => Card.findById(req.params.cardId)
 const deleteCard = (req, res) => Card.findByIdAndRemove(req.params.cardId)
   .then((card) => res.status(200).send(card))
   .catch((err) => {
-    if (err.name === 'CastError') {
-      res.status(404).send({ message: 'Карточка не найдена.' });
+    if (err.name === 'SomeErrorName' || err.name === 'CastError') {
+      res.status(400).send({ message: 'Переданы некорректные данные.' });
     } else {
       res.status(500).send({ message: 'Сервер не работает.' });
     }
