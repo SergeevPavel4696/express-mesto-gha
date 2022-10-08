@@ -22,6 +22,6 @@ app.use(require('./src/routes/users'));
 
 app.use(require('./src/routes/cards'));
 
-app.use('/', (req, res) => { res.status(400).send({ message: 'Неправильный адрес запроса' }); });
+app.use('/', (req, res) => { res.status(404).send({ message: 'Неправильный адрес запроса' }); });
 
 app.listen(PORT);
