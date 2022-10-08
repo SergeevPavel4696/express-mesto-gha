@@ -5,7 +5,7 @@ const createUser = (req, res) => {
   return User.create({ name, about, avatar })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === "SomeErrorName") {
+      if (err.name === 'SomeErrorName') {
         res.status(400).send({ message: 'Переданы некорректные данные.' })
       } else {
         res.status(500).send({ message: 'Сервер не работает.' })
@@ -18,12 +18,12 @@ const updateUserInfo = (req, res) => {
   return User.findByIdAndUpdate(req._id, { name, about }, { new: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === "SomeErrorName") {
+      if (err.name === 'SomeErrorName') {
         res.status(400).send({ message: 'Переданы некорректные данные.' })
       } else if (err.name === "CastError") {
         res.status(404).send({ message: "Пользователь не найден." })
       } else {
-        res.status(500).send({ message: "Сервер не работает." })
+        res.status(500).send({ message: 'Сервер не работает.' })
       }
     });
 };
@@ -33,9 +33,9 @@ const updateUserAvatar = (req, res) => {
   return User.findByIdAndUpdate(req._id, { avatar }, { new: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === "SomeErrorName") {
+      if (err.name === 'SomeErrorName') {
         res.status(400).send({ message: 'Переданы некорректные данные.' })
-      } else if (err.name === "CastError") {
+      } else if (err.name === 'CastError') {
         res.status(404).send({ message: 'Пользователь не найден.' })
       } else {
         res.status(500).send({ message: 'Сервер не работает.' })
@@ -46,7 +46,7 @@ const updateUserAvatar = (req, res) => {
 const getUser = (req, res) => User.findById(req.params.userId)
   .then((user) => res.status(200).send(user))
   .catch((err) => {
-    if (err.name === "CastError") {
+    if (err.name === 'CastError') {
       res.status(404).send({ message: 'Пользователь не найден.' })
     } else {
       res.status(500).send({ message: 'Сервер не работает.' })
@@ -56,7 +56,7 @@ const getUser = (req, res) => User.findById(req.params.userId)
 const getUsers = (req, res) => User.find({})
   .then((users) => res.status(200).send(users))
   .catch((err) => {
-    if (err.name === "SomeErrorName") {
+    if (err.name === 'SomeErrorName') {
       res.status(400).send({ message: 'Переданы некорректные данные.' })
     } else {
       res.status(500).send({ message: 'Сервер не работает.' })
