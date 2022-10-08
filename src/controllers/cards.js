@@ -1,8 +1,12 @@
 const Card = require('../models/card');
 
 const createCard = (req, res) => {
-  const { name, link } = req.body;
-  return Card.create({ name, link, owner: req._id })
+  const {
+    name, link, likes, createdAt,
+  } = req.body;
+  return Card.create({
+    name, link, owner: req._id, likes, createdAt,
+  })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'SomeErrorName' || err.name === 'ValidationError') {
