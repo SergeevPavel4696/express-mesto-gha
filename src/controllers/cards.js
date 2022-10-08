@@ -67,6 +67,4 @@ const getCards = (req, res) => Card.find({})
     }
   });
 
-module.exports = {
-  createCard, addLike, deleteLike, getCard, getCards,
-};
+
