@@ -62,3 +62,7 @@ const getCards = (req, res) => Card.find({})
       res.status(500).send({ message: 'Сервер не работает.' });
     }
   });
+
+module.exports = {
+  createCard, addLike, deleteLike, getCard, getCards,
+};
