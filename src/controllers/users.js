@@ -20,8 +20,8 @@ const updateUserInfo = (req, res) => {
     .catch((err) => {
       if (err.name === 'SomeErrorName') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
-      } else if (err.name === "CastError") {
-        res.status(404).send({ message: "Пользователь не найден." });
+      } else if (err.name === 'CastError') {
+        res.status(404).send({ message: 'Пользователь не найден.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
       }
@@ -64,5 +64,5 @@ const getUsers = (req, res) => User.find({})
   });
 
 module.exports = {
-  createUser, updateUserInfo, updateUserAvatar, getUser, getUsers
+  createUser, updateUserInfo, updateUserAvatar, getUser, getUsers,
 };
