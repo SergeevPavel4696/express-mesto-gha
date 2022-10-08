@@ -13,8 +13,9 @@ const createCard = (req, res) => {
     });
 };
 
-const addLike = (req, res) => Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req._id } },
-  { new: true })
+const addLike = (req, res) => {
+  const id = req.params.cardId;
+  Card.findByIdAndUpdate(id, { $addToSet: { likes: req._id } }, { new: true })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'SomeErrorName') {
@@ -25,9 +26,11 @@ const addLike = (req, res) => Card.findByIdAndUpdate(req.params.cardId, { $addTo
         res.status(500).send({ message: 'Сервер не работает.' });
       }
     });
+};
 
-const deleteLike = (req, res) => Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req._id } },
-  { new: true })
+const deleteLike = (req, res) => {
+  const id = req.params.cardId;
+  Card.findByIdAndUpdate(id, { $pull: { likes: req._id } }, { new: true })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'SomeErrorName') {
@@ -38,6 +41,7 @@ const deleteLike = (req, res) => Card.findByIdAndUpdate(req.params.cardId, { $pu
         res.status(500).send({ message: 'Сервер не работает.' });
       }
     });
+};
 
 const getCard = (req, res) => Card.findById(req.params.cardId)
   .then((card) => res.status(200).send(card))
