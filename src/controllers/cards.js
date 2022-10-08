@@ -5,7 +5,7 @@ const createCard = (req, res) => {
   return Card.create({ name, link, owner: req._id })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.name === 'SomeErrorName') {
+      if (err.name === 'SomeErrorName' || err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
