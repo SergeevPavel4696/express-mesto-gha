@@ -15,7 +15,7 @@ const createCard = (req, res) => {
 
 const addLike = (req, res) => {
   const id = req.params.cardId;
-  Card.findByIdAndUpdate(id, { $addToSet: { likes: req._id } }, { new: true })
+  Card.findByIdAndUpdate(id, { $addToSet: { likes: req._id } }, { new: true, runValidators: true })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'SomeErrorName') {
@@ -30,7 +30,7 @@ const addLike = (req, res) => {
 
 const deleteLike = (req, res) => {
   const id = req.params.cardId;
-  Card.findByIdAndUpdate(id, { $pull: { likes: req._id } }, { new: true })
+  Card.findByIdAndUpdate(id, { $pull: { likes: req._id } }, { new: true, runValidators: true })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'SomeErrorName') {

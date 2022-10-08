@@ -15,7 +15,7 @@ const createUser = (req, res) => {
 
 const updateUserInfo = (req, res) => {
   const { name, about } = req.body;
-  return User.findByIdAndUpdate(req._id, { name, about }, { new: true })
+  return User.findByIdAndUpdate(req._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'SomeErrorName') {
@@ -30,7 +30,7 @@ const updateUserInfo = (req, res) => {
 
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-  return User.findByIdAndUpdate(req._id, { avatar }, { new: true })
+  return User.findByIdAndUpdate(req._id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'SomeErrorName') {
@@ -53,10 +53,14 @@ const getUser = (req, res) => User.findById(req.params.userId)
     }
   });
 
-const getUsers = (req, res, next) => User.find({})
+const getUsers = (req, res) => User.find({})
   .then((users) => res.status(200).send(users))
   .catch((err) => {
-    next(err);
+    if (err.name === 'SomeErrorName') {
+      res.status(400).send({ message: 'Переданы некорректные данные.' });
+    } else {
+      res.status(500).send({ message: 'Сервер не работает.' });
+    }
   });
 
 module.exports = {
