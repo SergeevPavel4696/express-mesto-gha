@@ -18,7 +18,7 @@ const updateUserInfo = (req, res) => {
   return User.findByIdAndUpdate(req._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'SomeErrorName') {
+      if (err.name === 'SomeErrorName' || err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else if (err.name === 'CastError') {
         res.status(404).send({ message: 'Пользователь не найден.' });
