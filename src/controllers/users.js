@@ -5,7 +5,7 @@ const createUser = (req, res) => {
   return User.create({ name, about, avatar })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
@@ -23,7 +23,7 @@ const updateUserInfo = (req, res) => {
       return res.status(404).send({ message: 'Пользователь не найден.' });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
@@ -41,7 +41,7 @@ const updateUserAvatar = (req, res) => {
       return res.status(404).send({ message: 'Пользователь не найден.' });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else {
         res.status(500).send({ message: 'Сервер не работает.' });
