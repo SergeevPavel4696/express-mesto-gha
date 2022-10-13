@@ -90,12 +90,8 @@ const getUser = (req, res) => {
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => {
-      res.send(users);
-    })
-    .catch(() => {
-      res.status(serverError).send({ message: 'Сервер не работает.' });
-    });
+    .then((users) => res.send(users))
+    .catch(() => res.status(serverError).send({ message: 'Сервер не работает.' }));
 };
 
 const getMe = (req, res) => {
