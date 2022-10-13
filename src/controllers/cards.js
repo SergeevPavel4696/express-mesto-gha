@@ -9,7 +9,7 @@ const createCard = (req, res) => {
     name, link, likes, createdAt,
   } = req.body;
   return Card.create({
-    name, link, owner: req._id, likes, createdAt,
+    name, link, owner: req.user._id, likes, createdAt,
   })
     .then((card) => res.send(card))
     .catch((err) => {
