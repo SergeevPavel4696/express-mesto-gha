@@ -15,7 +15,7 @@ const createCard = (req, res, next) => {
       if (card) {
         res.send(card);
       } else {
-        Promise.reject(new BadRequestError('Карточка не создана.'));
+        throw new BadRequestError('Карточка не создана.');
       }
     })
     .catch(next);
@@ -37,10 +37,10 @@ const deleteCard = (req, res, next) => {
               res.send({ message: 'Не удалось удалить карточку.' });
             });
         } else {
-          Promise.reject(new ForbiddenError('Вы не можете удалить чужую карточку.'));
+          throw new ForbiddenError('Вы не можете удалить чужую карточку.');
         }
       } else {
-        Promise.reject(new NotFoundError('Карточка не найдена.'));
+        throw new NotFoundError('Карточка не найдена.');
       }
     })
     .catch(next);
@@ -52,7 +52,7 @@ const getCards = (req, res, next) => {
       if (cards) {
         res.send(cards);
       } else {
-        Promise.reject(new NotFoundError('Карточки не найдены.'));
+        throw new NotFoundError('Карточки не найдены.');
       }
     })
     .catch(next);
@@ -66,7 +66,7 @@ const addLike = (req, res, next) => {
       if (card) {
         res.send(card);
       } else {
-        Promise.reject(new NotFoundError('Карточка не найдена.'));
+        throw new NotFoundError('Карточка не найдена.');
       }
     })
     .catch(next);
@@ -80,7 +80,7 @@ const deleteLike = (req, res, next) => {
       if (card) {
         res.send(card);
       } else {
-        Promise.reject(new NotFoundError('Карточка не найдена.'));
+        throw new NotFoundError('Карточка не найдена.');
       }
     })
     .catch(next);

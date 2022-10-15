@@ -21,7 +21,7 @@ const createUser = (req, res, next) => {
             delete newUser.password;
             res.send(newUser);
           } else {
-            Promise.reject(new BadRequestError('Пользователь не создан.'));
+            throw new BadRequestError('Пользователь не создан.');
           }
         })
         .catch((err) => {
@@ -44,7 +44,7 @@ const updateUserInfo = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        Promise.reject(new NotFoundError('Пользователь не найден.'));
+        throw new NotFoundError('Пользователь не найден.');
       }
     })
     .catch(next);
@@ -58,7 +58,7 @@ const updateUserAvatar = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        Promise.reject(new NotFoundError('Пользователь не найден.'));
+        throw new NotFoundError('Пользователь не найден.');
       }
     })
     .catch(next);
@@ -71,7 +71,7 @@ const getUser = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        Promise.reject(new NotFoundError('Пользователь не найден.'));
+        throw new NotFoundError('Пользователь не найден.');
       }
     })
     .catch(next);
@@ -83,7 +83,7 @@ const getUsers = (req, res, next) => {
       if (users) {
         res.send(users);
       } else {
-        Promise.reject(new NotFoundError('Пользователи не найдены.'));
+        throw new NotFoundError('Пользователи не найдены.');
       }
     })
     .catch(next);
@@ -96,7 +96,7 @@ const getMe = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        Promise.reject(new NotFoundError('Пользователь не найден.'));
+        throw new NotFoundError('Пользователь не найден.');
       }
     })
     .catch(next);
@@ -114,11 +114,11 @@ const login = (req, res, next) => {
               const token = jwt.sign(_id, 'some-secret-key', { expiresIn: 3600 * 24 * 7 });
               res.send({ token });
             } else {
-              Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
+              throw new UnAuthorizedError('Неправильные почта или пароль.');
             }
           });
       } else {
-        Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
+        throw new UnAuthorizedError('Неправильные почта или пароль.');
       }
     })
     .catch((err) => {
