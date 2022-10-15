@@ -24,6 +24,11 @@ app.use(require('./src/routes/users'));
 
 app.use(require('./src/routes/cards'));
 
-app.use('/', (req, res) => { res.status(404).send({ message: 'Некорректный адрес запроса.' }); });
+app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  next(res.status(statusCode).send({ message: statusCode === 500 ? 'Сервер не работает' : message }));
+});
 
 app.listen(PORT);
