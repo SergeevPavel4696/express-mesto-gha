@@ -116,7 +116,7 @@ const login = (req, res, next) => {
             }
           });
       } else {
-        Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
+        next(new UnAuthorizedError('Неправильные почта или пароль.'));
       }
     })
     .catch(next);
