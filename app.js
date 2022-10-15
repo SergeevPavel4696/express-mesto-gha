@@ -38,6 +38,4 @@ app.use('/', (req, res) => res.status(404).send({ message: 'Некорректн
 
 app.use(errors);
 
-app.use(errorHandler);
-
 app.listen(PORT);
