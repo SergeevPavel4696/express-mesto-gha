@@ -119,7 +119,9 @@ const login = (req, res, next) => {
         Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
       }
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
 
 module.exports = {
