@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const AlreadyExistsError = require('../errors/AlreadyExistsError');
@@ -113,16 +114,16 @@ const login = (req, res, next) => {
               const token = jwt.sign(_id, 'some-secret-key', { expiresIn: 3600 * 24 * 7 });
               res.send({ token });
             } else {
-              Promise.reject(new BadRequestError('Неправильные почта или пароль.'));
+              Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
             }
           });
       } else {
-        Promise.reject(new BadRequestError('Неправильные почта или пароль.'));
+        Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.message));
+        next(new UnAuthorizedError(err.message));
       } else {
         next();
       }
