@@ -4,15 +4,18 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return next(new UnAuthorizedError('Необходимаавторизация'));
+    next(new UnAuthorizedError('Необходимаавторизация'));
+  } else {
+    const token = authorization.replace('Bearer ', '');
+    let payload;
+    try {
+      payload = jwt.verify(token, 'some-secret-key');
+    } catch (err) {
+      next(new UnAuthorizedError('Необходима авторизация'));
+    }
+    req.user = payload;
+    next();
   }
-  const token = authorization.replace('Bearer ', '');
-  try {
-    req.user = jwt.verify(token, 'some-secret-key');
-  } catch (err) {
-    return next(new UnAuthorizedError('Необходима авторизация'));
-  }
-  return next();
 };
 
 module.exports = auth;
