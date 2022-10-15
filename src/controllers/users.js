@@ -16,10 +16,9 @@ const createUser = (req, res, next) => {
       })
         .then((user) => {
           if (user) {
-            res.send(user);
-          } else {
-            Promise.reject(new BadRequestError('Пользователь не создан.'));
+            return res.send(user);
           }
+          return Promise.reject(new BadRequestError('Пользователь не создан.'));
         })
         .catch(next);
     });
