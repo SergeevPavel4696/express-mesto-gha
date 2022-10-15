@@ -7,12 +7,12 @@ const BadRequestError = require('../errors/BadRequestError');
 
 const createUser = (req, res, next) => {
   const {
-    name, about, avatar, email,
+    name, about, avatar, email, password,
   } = req.body;
-  bcrypt.hash(req.body.password, 10)
-    .then((password) => {
+  bcrypt.hash(password, 10)
+    .then((hash) => {
       User.create({
-        name, about, avatar, email, password,
+        name, about, avatar, email, password: hash,
       })
         .then((user) => {
           if (user) {
