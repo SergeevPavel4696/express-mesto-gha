@@ -6,17 +6,17 @@ const auth = (req, res, next) => {
   let token = req.cookies.jwt;
   if ((!authorization || !authorization.startsWith('Bearer ')) && !token) {
     throw new UnAuthorizedError('Необходимаавторизация');
-  } else {
+  } else if (authorization && authorization.startsWith('Bearer ')) {
     token = authorization.replace('Bearer ', '');
-    let payload;
-    try {
-      payload = jwt.verify(token, 'some-secret-key');
-    } catch (err) {
-      next(new UnAuthorizedError('Необходима авторизация'));
-    }
-    req.user = payload;
-    next();
   }
+  let payload;
+  try {
+    payload = jwt.verify(token, 'some-secret-key');
+  } catch (err) {
+    next(new UnAuthorizedError('Необходима авторизация'));
+  }
+  req.user = payload;
+  next();
 };
 
 module.exports = auth;
