@@ -5,7 +5,7 @@ const unAuthorized = 401;
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    res.status(unAuthorized).send({ message: 'Необходима авторизация' });
+    res.status(unAuthorized).send({ message: 'Необходимаавторизация' });
   } else {
     const token = authorization.replace('Bearer ', '');
     try {
