@@ -4,6 +4,7 @@ const User = require('../models/user');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
+const AlreadyExistsError = require('../errors/AlreadyExistsError');
 
 const createUser = (req, res, next) => {
   const {
@@ -16,14 +17,20 @@ const createUser = (req, res, next) => {
       })
         .then((user) => {
           if (user) {
-            const qwe = user.toObject();
-            delete qwe.password;
-            res.send(qwe);
+            const newUser = user.toObject();
+            delete newUser.password;
+            res.send(newUser);
           } else {
             Promise.reject(new BadRequestError('Пользователь не создан.'));
           }
         })
-        .catch(next);
+        .catch((err) => {
+          if (err.code === 11000) {
+            Promise.reject(new AlreadyExistsError('Пользователь с указанным mail уже существует.'));
+          } else {
+            next();
+          }
+        });
     });
 };
 
