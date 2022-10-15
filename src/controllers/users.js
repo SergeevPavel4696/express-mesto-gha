@@ -16,7 +16,9 @@ const createUser = (req, res, next) => {
       })
         .then((user) => {
           if (user) {
-            res.send(user);
+            const qwe = user.toObject();
+            delete qwe.password;
+            res.send(qwe);
           } else {
             Promise.reject(new BadRequestError('Пользователь не создан.'));
           }
