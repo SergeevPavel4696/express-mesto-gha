@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { celebrate, Joi } = require('celebrate');
 const { login, createUser } = require('./src/controllers/users');
 const auth = require('./src/middlewares/auth');
 const errorHandler = require('./src/middlewares/errorHandler');
@@ -17,7 +18,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().uri(),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
 
 app.use(auth);
 
