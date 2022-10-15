@@ -26,11 +26,12 @@ const createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.code === 11000) {
-            Promise.reject(new AlreadyExistsError('Пользователь с указанным mail уже существует.'));
+            Promise.reject(new AlreadyExistsError('Пользователь с указанным email уже существует.'));
           } else {
             next();
           }
-        });
+        })
+        .catch(next);
     });
 };
 
