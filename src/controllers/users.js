@@ -27,6 +27,8 @@ const createUser = (req, res, next) => {
         .catch((err) => {
           if (err.code === 11000) {
             next(new AlreadyExistsError('Пользователь с указанным email уже существует.'));
+          } else if (err.name === 'ValidationError') {
+            next(new BadRequestError(err.message));
           } else {
             next();
           }
@@ -116,7 +118,7 @@ const login = (req, res, next) => {
             }
           });
       } else {
-        next(new UnAuthorizedError('Неправильные почта или пароль.'));
+        Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
       }
     })
     .catch(next);
