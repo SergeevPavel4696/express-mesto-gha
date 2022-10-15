@@ -7,13 +7,11 @@ const auth = (req, res, next) => {
     next(new UnAuthorizedError('Необходима авторизация'));
   } else {
     const token = authorization.replace('Bearer ', '');
-    let payload;
     try {
-      payload = jwt.verify(token, 'some-secret-key');
+      req.user = jwt.verify(token, 'some-secret-key');
     } catch (err) {
       next(new UnAuthorizedError('Необходима авторизация'));
     }
-    req.user = payload;
     next();
   }
 };
