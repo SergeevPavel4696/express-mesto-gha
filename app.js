@@ -28,7 +28,7 @@ app.use('/', (req, res) => res.status(404).send({ message: 'Некорректн
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  res.status(statusCode).send({ message: statusCode === 500 ? 'Сервер не работает' : message });
+  next(res.status(statusCode).send({ message: statusCode === 500 ? 'Сервер не работает' : message }));
 });
 
 app.listen(PORT);
