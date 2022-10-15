@@ -3,10 +3,11 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  let token = req.cookies.jwt;
+  if ((!authorization || !authorization.startsWith('Bearer ')) && !token) {
     throw new UnAuthorizedError('Необходимаавторизация');
   } else {
-    const token = authorization.replace('Bearer ', '');
+    token = authorization.replace('Bearer ', '');
     let payload;
     try {
       payload = jwt.verify(token, 'some-secret-key');
