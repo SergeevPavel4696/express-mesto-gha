@@ -22,8 +22,7 @@ const createUser = (req, res, next) => {
           }
         })
         .catch(next);
-    })
-    .catch(next);
+    });
 };
 
 const updateUserInfo = (req, res, next) => {
