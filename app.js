@@ -33,11 +33,9 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use(auth);
+app.use(auth, require('./src/routes/users'));
 
-app.use(require('./src/routes/users'));
-
-app.use(require('./src/routes/cards'));
+app.use(auth, require('./src/routes/cards'));
 
 app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
 
