@@ -4,7 +4,6 @@ const User = require('../models/user');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
-const AlreadyExistsError = require('../errors/AlreadyExistsError');
 
 const createUser = (req, res, next) => {
   const {
@@ -22,12 +21,7 @@ const createUser = (req, res, next) => {
             Promise.reject(new BadRequestError('Пользователь не создан.'));
           }
         })
-        .catch((err) => {
-          if (err.code === 11000) {
-            next(new AlreadyExistsError('Пользователь с указанным email уже зарегистрирован.'));
-          }
-          next(err);
-        });
+        .catch(next);
     });
 };
 
