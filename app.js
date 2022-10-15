@@ -36,7 +36,7 @@ app.use(require('./src/routes/cards'));
 
 app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
 
-app.use(errors);
+app.use(errors());
 
 app.use(errorHandler);
 
