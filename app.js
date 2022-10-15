@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { login, createUser } = require('./src/controllers/users');
 const auth = require('./src/middlewares/auth');
+const errorHandler = require('./src/middlewares/errorHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -26,10 +27,6 @@ app.use(require('./src/routes/cards'));
 
 app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({ message: statusCode === 500 ? 'Сервер не работает' : message });
-  next(err, req, res);
-});
+app.use(errorHandler);
 
 app.listen(PORT);
