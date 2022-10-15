@@ -20,9 +20,9 @@ const createUser = (req, res, next) => {
           } else {
             Promise.reject(new BadRequestError('Пользователь не создан.'));
           }
-        })
-        .catch(next);
-    });
+        });
+    })
+    .catch(next);
 };
 
 const updateUserInfo = (req, res, next) => {
