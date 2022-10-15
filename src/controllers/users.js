@@ -114,7 +114,7 @@ const login = (req, res, next) => {
               const token = jwt.sign(_id, 'some-secret-key', { expiresIn: 3600 * 24 * 7 });
               res.send({ token });
             } else {
-              Promise.reject(new UnAuthorizedError('Неправильные почта или пароль.'));
+              Promise.reject(new BadRequestError('Неправильные почта или пароль.'));
             }
           });
       } else {
