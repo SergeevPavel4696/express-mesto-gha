@@ -30,8 +30,7 @@ const createUser = (req, res, next) => {
           } else {
             next();
           }
-        })
-        .catch(next);
+        });
     });
 };
 
