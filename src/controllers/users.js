@@ -104,7 +104,7 @@ const getMe = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findUserByCredentials(email, password)
+  User.findOne({ email }).select('+password')
     .then((user) => {
       if (user) {
         const { _id } = user;
