@@ -111,7 +111,7 @@ const login = (req, res, next) => {
         bcrypt.compare(password, user.password)
           .then((matched) => {
             if (matched) {
-              const token = jwt.sign(_id, 'some-secret-key', { expiresIn: '7d' });
+              const token = jwt.sign({ _id }, 'some-secret-key', { expiresIn: '7d' });
               res.cookie('token', token, { maxAge: 604800, httpOnly: true });
               res.send({ token });
             } else {
