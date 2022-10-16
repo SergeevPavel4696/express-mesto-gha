@@ -104,7 +104,7 @@ const getMe = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findOne(email).select('+password')
+  User.findUserByCredentials(email).select('+password')
     .then((user) => {
       if (user) {
         bcrypt.compare(password, user.password)
