@@ -38,9 +38,9 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
-app.use('/', userRouter);
+app.use('/users', userRouter);
 
-app.use('/', cardRouter);
+app.use('/cards', cardRouter);
 
 app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
 
