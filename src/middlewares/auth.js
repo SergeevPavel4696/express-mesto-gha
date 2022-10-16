@@ -2,13 +2,9 @@ const jwt = require('jsonwebtoken');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 
 const auth = (req, res, next) => {
-  let { token } = req.cookies;
-  const { Authorization } = req.headers;
-  if (!token && (!Authorization || !Authorization.startsWith('Bearer '))) {
-    throw new UnAuthorizedError('Необходимаавторизация');
-  }
+  const { token } = req.cookies;
   if (!token) {
-    token = Authorization.replace('Bearer ', '');
+    throw new UnAuthorizedError('Необходимаавторизация');
   }
   let payload;
   try {
