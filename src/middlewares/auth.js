@@ -3,12 +3,12 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 
 const auth = (req, res, next) => {
   let { token } = req.cookies;
-  const { authorization } = req.headers;
-  if (!token && (!authorization || !authorization.startsWith('Bearer '))) {
+  const { Authorization } = req.headers;
+  if (!token && (!Authorization || !Authorization.startsWith('Bearer '))) {
     throw new UnAuthorizedError('Необходимаавторизация');
   }
   if (!token) {
-    token = authorization.replace('Bearer ', '');
+    token = Authorization.replace('Bearer ', '');
   }
   let payload;
   try {
