@@ -6,6 +6,9 @@ const { login, createUser } = require('./src/controllers/users');
 const auth = require('./src/middlewares/auth');
 const errorHandler = require('./src/middlewares/errorHandler');
 
+const cardRouter = require('./src/routes/cards');
+const userRouter = require('./src/routes/users');
+
 const { PORT = 3000 } = process.env;
 const app = express();
 
@@ -35,9 +38,9 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
-app.use(require('./src/routes/users'));
+app.use('/', userRouter);
 
-app.use(require('./src/routes/cards'));
+app.use('/', cardRouter);
 
 app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
 
