@@ -111,8 +111,9 @@ const login = (req, res, next) => {
         bcrypt.compare(password, user.password)
           .then((matched) => {
             if (matched) {
-              const token = jwt.sign(_id, 'some-secret-key', { expiresIn: 3600 * 24 * 7 });
-              res.send({ _id: token });
+              const token = jwt.sign(_id, 'some-secret-key', { expiresIn: '7d' });
+              res.cookie('token', token, { maxAge: 604800, httpOnly: true });
+              res.send({ token });
             } else {
               throw new UnAuthorizedError('Неправильные почта или пароль.');
             }
