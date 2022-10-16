@@ -104,15 +104,16 @@ const getMe = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findUserByCredentials(email).select('+password')
+  User.findOne(email).select('+password')
     .then((user) => {
       if (user) {
+        const { _id } = user;
         bcrypt.compare(password, user.password)
           .then((matched) => {
             if (matched) {
-              const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+              const token = jwt.sign(_id, 'some-secret-key', { expiresIn: '7d' });
               res.cookie('token', token, { maxAge: 604800, httpOnly: true });
-              res.send({ message: 'Вход выполнен успешно!' });
+              res.send({ token });
             } else {
               throw new UnAuthorizedError('Неправильные почта или пароль.');
             }
