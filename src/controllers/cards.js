@@ -33,13 +33,13 @@ const deleteCard = (req, res, next) => {
   Card.findById(cardId).orFail(new NotFoundError('Карточка не найдена.'))
     .then((card) => {
       const ownerId = card.owner;
-      if (card) {
-        if (ownerId.toString() === _id.toString()) {
-          Card.findByIdAndRemove(cardId).orFail(new ForbiddenError('Вы не можете удалить чужую карточку.'))
-            .then(() => {
-              res.send(card);
-            });
-        }
+      if (ownerId.toString() === _id.toString()) {
+        card.remove()
+          .then(() => {
+            res.send(card);
+          });
+      } else {
+        throw new ForbiddenError('Вы не можете удалить чужую карточку.');
       }
     })
     .catch((err) => {
