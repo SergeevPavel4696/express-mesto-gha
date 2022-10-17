@@ -33,6 +33,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('user', userSchema);
