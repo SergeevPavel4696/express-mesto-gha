@@ -28,19 +28,16 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  const { cardId } = req.params.cardId;
+  const { cardId } = req.params;
   const { _id } = req.user;
   Card.findById(cardId)
     .then((card) => {
       const ownerId = card.owner;
       if (card) {
         if (ownerId.toString() === _id.toString()) {
-          card.remove()
+          Card.findByIdAndRemove(cardId)
             .then(() => {
               res.send(card);
-            })
-            .catch(() => {
-              res.send({ message: 'Не удалось удалить карточку.' });
             });
         } else {
           throw new ForbiddenError('Вы не можете удалить чужую карточку.');
