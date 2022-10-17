@@ -21,14 +21,14 @@ const createUser = (req, res, next) => {
             delete newUser.password;
             res.send(newUser);
           } else {
-            throw new BadRequestError('Пользователь не создан.');
+            throw new BadRequestError('Переданы некорректные данные.');
           }
         })
         .catch((err) => {
           if (err.code === 11000) {
             next(new AlreadyExistsError('Пользователь с указанным email уже существует.'));
           } else if (err.name === 'ValidationError') {
-            next(new BadRequestError(err.message));
+            next(new BadRequestError('Переданы некорректные данные.'));
           } else {
             next();
           }
@@ -88,7 +88,7 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Некорректный id.'));
+        next(new BadRequestError('Переданы некорректные данные.'));
       } else {
         next(err);
       }
