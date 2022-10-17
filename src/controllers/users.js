@@ -38,8 +38,8 @@ const createUser = (req, res, next) => {
 
 const updateUserInfo = (req, res, next) => {
   const { name, about } = req.body;
-  const id = req._id;
-  User.findByIdAndUpdate(id, { name, about }, { new: true, runValidators: true })
+  const { _id } = req._id;
+  User.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
         res.send(user);
@@ -52,8 +52,8 @@ const updateUserInfo = (req, res, next) => {
 
 const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  const id = req._id;
-  User.findByIdAndUpdate(id, avatar, { new: true, runValidators: true })
+  const { _id } = req;
+  User.findByIdAndUpdate(_id, avatar, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
         res.send(user);
@@ -77,7 +77,9 @@ const getUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Некорректный id.'));
-      } else next(err);
+      } else {
+        next(err);
+      }
     });
 };
 
