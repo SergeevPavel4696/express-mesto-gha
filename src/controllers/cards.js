@@ -33,8 +33,11 @@ const deleteCard = (req, res, next) => {
   Card.findById(cardId)
     .then((card) => {
       const ownerId = card.owner;
+      console.log(`_id = '${_id}', ownerId = '${ownerId}'`);
+      console.dir(ownerId);
+      console.log(`ownerId ==== _id = ${ownerId === _id}`);
       if (card) {
-        if (ownerId === _id) {
+        if (ownerId.toString() === _id.toString()) {
           Card.findByIdAndRemove(cardId)
             .then(() => {
               res.send(card);
