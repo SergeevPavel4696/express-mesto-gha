@@ -18,7 +18,13 @@ const createCard = (req, res, next) => {
         throw new BadRequestError('Карточка не создана.');
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const deleteCard = (req, res, next) => {
