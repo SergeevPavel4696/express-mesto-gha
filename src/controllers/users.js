@@ -65,8 +65,8 @@ const updateUserAvatar = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  const id = req.params.userId;
-  User.findById(id)
+  const { id } = req.params.userId;
+  User.findById({ id })
     .then((user) => {
       if (user) {
         res.send(user);
