@@ -72,7 +72,7 @@ const getCards = (req, res, next) => {
 
 const addLike = (req, res, next) => {
   const { cardId } = req.params;
-  const { _id } = req;
+  const { _id } = req.user;
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: _id } }, { new: true, runValidators: true })
     .then((card) => {
       if (card) {
@@ -92,7 +92,7 @@ const addLike = (req, res, next) => {
 
 const deleteLike = (req, res, next) => {
   const { cardId } = req.params;
-  const { _id } = req;
+  const { _id } = req.user;
   Card.findByIdAndUpdate(cardId, { $pull: { likes: _id } }, { new: true, runValidators: true })
     .then((card) => {
       if (card) {
