@@ -7,9 +7,9 @@ const createCard = (req, res, next) => {
   const {
     name, link, likes, createdAt,
   } = req.body;
-  const { owner } = req.user._id;
+  const { _id } = req.user;
   Card.create({
-    name, link, owner, likes, createdAt,
+    name, link, owner: _id, likes, createdAt,
   })
     .then((card) => {
       if (card) {
@@ -22,13 +22,13 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  const id = req.params.cardId;
-  const userId = req.user._id;
-  Card.findById(id)
+  const { cardId } = req.params.cardId;
+  const { _id } = req.user;
+  Card.findById(cardId)
     .then((card) => {
       const ownerId = card.owner;
       if (card) {
-        if (ownerId === userId) {
+        if (ownerId === _id) {
           card.remove()
             .then(() => {
               res.send(card);
@@ -59,9 +59,9 @@ const getCards = (req, res, next) => {
 };
 
 const addLike = (req, res, next) => {
-  const id = req.params.cardId;
-  const { likes } = req._id;
-  Card.findByIdAndUpdate(id, { $addToSet: { likes } }, { new: true, runValidators: true })
+  const { cardId } = req.params;
+  const { _id } = req;
+  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: _id } }, { new: true, runValidators: true })
     .then((card) => {
       if (card) {
         res.send(card);
@@ -73,9 +73,9 @@ const addLike = (req, res, next) => {
 };
 
 const deleteLike = (req, res, next) => {
-  const id = req.params.cardId;
-  const { likes } = req._id;
-  Card.findByIdAndUpdate(id, { $pull: { likes } }, { new: true, runValidators: true })
+  const { cardId } = req.params;
+  const { _id } = req;
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: _id } }, { new: true, runValidators: true })
     .then((card) => {
       if (card) {
         res.send(card);
