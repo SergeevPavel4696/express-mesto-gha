@@ -30,20 +30,16 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const { _id } = req.user;
-  Card.findById(cardId)
+  Card.findById(cardId).orFail(new NotFoundError('Карточка не найдена.'))
     .then((card) => {
       const ownerId = card.owner;
       if (card) {
         if (ownerId.toString() === _id.toString()) {
-          Card.findByIdAndRemove(cardId)
+          Card.findByIdAndRemove(cardId).orFail(new ForbiddenError('Вы не можете удалить чужую карточку.'))
             .then(() => {
-              res.send({ message: 'asdzxc' });
+              res.send(card);
             });
-        } else {
-          throw new ForbiddenError('Вы не можете удалить чужую карточку.');
         }
-      } else {
-        throw new NotFoundError('Карточка не найдена.');
       }
     })
     .catch((err) => {
