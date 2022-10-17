@@ -7,22 +7,22 @@ const createCard = (req, res, next) => {
   const {
     name, link, likes, createdAt,
   } = req.body;
-  const { _id } = req.user;
+  const owner = req.user._id;
   Card.create({
-    name, link, owner: _id, likes, createdAt,
+    name, link, owner, likes, createdAt,
   })
     .then((card) => {
       if (card) {
         res.send(card);
       } else {
-        throw new BadRequestError('Карточка не создана.');
+        throw new BadRequestError('Переданы некорректные данные.');
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные.'));
       } else {
-        next(err);
+        next();
       }
     });
 };
