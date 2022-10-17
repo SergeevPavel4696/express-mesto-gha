@@ -43,13 +43,10 @@ app.post('/signup', celebrate({
 app.use(auth);
 
 app.use('/users', userRouter);
-
 app.use('/cards', cardRouter);
-
 app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
 
 app.use(errors());
-
 app.use(errorHandler);
 
 app.listen(PORT);

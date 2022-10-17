@@ -114,7 +114,7 @@ const getMe = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError('Пользователь не найден.');
+        throw new NotFoundError('Меня нет.');
       }
     })
     .catch(next);
