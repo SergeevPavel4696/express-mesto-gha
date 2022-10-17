@@ -28,25 +28,39 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
+  console.log(1);
   const { cardId } = req.params;
+  console.log(2);
   const { _id } = req.user;
+  console.log(3);
   Card.findById(cardId).orFail(new NotFoundError('Карточка не найдена.'))
     .then((card) => {
+      console.log(4);
       const ownerId = card.owner;
+      console.log(5);
       if (ownerId.toString() === _id.toString()) {
+        console.log(6);
         card.remove()
           .then(() => {
+            console.log(7);
             res.send(card);
+            console.log(8);
           });
       } else {
+        console.log(9);
         throw new ForbiddenError('Вы не можете удалить чужую карточку.');
       }
     })
     .catch((err) => {
+      console.log(err);
       if (err.name === 'ValidationError' || err.name === 'CastError') {
+        console.log(10);
         next(new BadRequestError('Переданы некорректные данные.'));
+        console.log(11);
       } else {
-        next();
+        console.log(12);
+        next(err);
+        console.log(13);
       }
     });
 };
