@@ -47,7 +47,13 @@ const updateUserInfo = (req, res, next) => {
         throw new NotFoundError('Пользователь не найден.');
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateUserAvatar = (req, res, next) => {
@@ -61,7 +67,13 @@ const updateUserAvatar = (req, res, next) => {
         throw new NotFoundError('Пользователь не найден.');
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const getUser = (req, res, next) => {
