@@ -49,7 +49,13 @@ const deleteCard = (req, res, next) => {
         throw new NotFoundError('Карточка не найдена.');
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next();
+      }
+    });
 };
 
 const getCards = (req, res, next) => {
@@ -75,7 +81,13 @@ const addLike = (req, res, next) => {
         throw new NotFoundError('Карточка не найдена.');
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next();
+      }
+    });
 };
 
 const deleteLike = (req, res, next) => {
@@ -89,7 +101,13 @@ const deleteLike = (req, res, next) => {
         throw new NotFoundError('Карточка не найдена.');
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next();
+      }
+    });
 };
 
 module.exports = {
