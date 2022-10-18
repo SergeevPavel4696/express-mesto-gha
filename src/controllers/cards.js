@@ -4,19 +4,11 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const NotFoundError = require('../errors/NotFoundError');
 
 const createCard = (req, res, next) => {
-  const {
-    name, link, likes, createdAt,
-  } = req.body;
+  const { name, link } = req.body;
   const owner = req.user._id;
-  Card.create({
-    name, link, owner, likes, createdAt,
-  })
+  Card.create({ name, link, owner })
     .then((card) => {
-      if (card) {
-        res.send(card);
-      } else {
-        throw new BadRequestError('Переданы некорректные данные.');
-      }
+      res.send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -34,16 +26,15 @@ const deleteCard = (req, res, next) => {
     .then((card) => {
       const ownerId = card.owner;
       if (ownerId.toString() === _id.toString()) {
-        card.remove()
+        return card.remove()
           .then(() => {
             res.send(card);
           });
-      } else {
-        throw new ForbiddenError('Вы не можете удалить чужую карточку.');
       }
+      return new ForbiddenError('Вы не можете удалить чужую карточку.');
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные.'));
       } else {
         next(err);
@@ -54,11 +45,7 @@ const deleteCard = (req, res, next) => {
 const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
-      if (cards) {
-        res.send(cards);
-      } else {
-        throw new NotFoundError('Карточки не найдены.');
-      }
+      res.send(cards);
     })
     .catch(next);
 };
@@ -66,7 +53,7 @@ const getCards = (req, res, next) => {
 const addLike = (req, res, next) => {
   const { cardId } = req.params;
   const { _id } = req.user;
-  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: _id } }, { new: true, runValidators: true })
+  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: _id } }, { new: true })
     .then((card) => {
       if (card) {
         res.send(card);
@@ -75,7 +62,7 @@ const addLike = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные.'));
       } else {
         next(err);
@@ -86,7 +73,7 @@ const addLike = (req, res, next) => {
 const deleteLike = (req, res, next) => {
   const { cardId } = req.params;
   const { _id } = req.user;
-  Card.findByIdAndUpdate(cardId, { $pull: { likes: _id } }, { new: true, runValidators: true })
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: _id } }, { new: true })
     .then((card) => {
       if (card) {
         res.send(card);
@@ -95,7 +82,7 @@ const deleteLike = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные.'));
       } else {
         next(err);

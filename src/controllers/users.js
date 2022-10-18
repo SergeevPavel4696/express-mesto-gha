@@ -16,13 +16,9 @@ const createUser = (req, res, next) => {
         name, about, avatar, email, password: hash,
       })
         .then((user) => {
-          if (user) {
-            const newUser = user.toObject();
-            delete newUser.password;
-            res.send(newUser);
-          } else {
-            throw new BadRequestError('Переданы некорректные данные.');
-          }
+          const newUser = user.toObject();
+          delete newUser.password;
+          res.send(newUser);
         })
         .catch((err) => {
           if (err.code === 11000) {
@@ -30,7 +26,7 @@ const createUser = (req, res, next) => {
           } else if (err.name === 'ValidationError') {
             next(new BadRequestError('Переданы некорректные данные.'));
           } else {
-            next();
+            next(err);
           }
         });
     });
@@ -98,11 +94,7 @@ const getUser = (req, res, next) => {
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
-      if (users) {
-        res.send(users);
-      } else {
-        throw new NotFoundError('Пользователи не найдены.');
-      }
+      res.send(users);
     })
     .catch(next);
 };
@@ -141,7 +133,7 @@ const login = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new UnAuthorizedError(err.message));
       } else {
         next(err);

@@ -9,6 +9,7 @@ const errorHandler = require('./src/middlewares/errorHandler');
 
 const cardRouter = require('./src/routes/cards');
 const userRouter = require('./src/routes/users');
+const NotFoundError = require('./src/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -44,7 +45,9 @@ app.use(auth);
 
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
-app.use('/', (req, res) => res.status(404).send({ message: 'Некорректный адрес запроса.' }));
+app.use('/', (req, res, next) => {
+  next(new NotFoundError('Некорректный адрес запроса.'));
+});
 
 app.use(errors());
 app.use(errorHandler);
