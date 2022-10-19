@@ -132,13 +132,7 @@ const login = (req, res, next) => {
         throw new UnAuthorizedError('Неправильные почта или пароль.');
       }
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new UnAuthorizedError(err.message));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 module.exports = {
