@@ -3,13 +3,16 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
+
 const { login, createUser } = require('./src/controllers/users');
-const auth = require('./src/middlewares/auth');
-const errorHandler = require('./src/middlewares/errorHandler');
 
 const cardRouter = require('./src/routes/cards');
 const userRouter = require('./src/routes/users');
 const NotFoundError = require('./src/errors/NotFoundError');
+
+const auth = require('./src/middlewares/auth');
+const errorHandler = require('./src/middlewares/errorHandler');
+const { requestLogger, errorLogger } = require('./src/middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -24,6 +27,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -48,6 +53,8 @@ app.use('/cards', cardRouter);
 app.use('/', (req, res, next) => {
   next(new NotFoundError('Некорректный адрес запроса.'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
