@@ -19,6 +19,8 @@ const app = express();
 const allowedCors = [
   'http://sergeevpavel.mesto.nomoredomains.icu/',
   'https://sergeevpavel.mesto.nomoredomains.icu/',
+  'http://api.sergeevpavel.mesto.nomoredomains.icu/',
+  'https://api.sergeevpavel.mesto.nomoredomains.icu/',
   'localhost:3000',
 ];
 
