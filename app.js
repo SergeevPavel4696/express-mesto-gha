@@ -18,6 +18,8 @@ const { PORT = 3000 } = process.env;
 const app = express();
 const allowedCors = [
   'http://sergeevpavel.mesto.nomoredomains.icu/',
+  'http://sergeevpavel.mesto.nomoredomains.icu/sign-in',
+  'http://sergeevpavel.mesto.nomoredomains.icu/sign-up',
   'https://sergeevpavel.mesto.nomoredomains.icu/',
   'localhost:3000',
 ];
