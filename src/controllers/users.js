@@ -102,6 +102,9 @@ const getUsers = (req, res, next) => {
 const getMe = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователеь не найден');
+    })
     .then((user) => {
       if (user) {
         res.send(user);
