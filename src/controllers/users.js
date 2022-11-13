@@ -100,7 +100,16 @@ const getUsers = (req, res, next) => {
 };
 
 const getMe = (req, res, next) => {
-  next(res.send(req.toJSON()));
+  const { _id } = req.user;
+  User.findById(_id)
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        throw new NotFoundError('Меня нет.');
+      }
+    })
+    .catch(next);
 };
 
 const login = (req, res, next) => {
