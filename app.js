@@ -13,35 +13,14 @@ const NotFoundError = require('./src/errors/NotFoundError');
 const auth = require('./src/middlewares/auth');
 const errorHandler = require('./src/middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./src/middlewares/logger');
+const cors = require('./src/middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-const allowedCors = [
-  'http://sergeevpavel.mesto.nomoredomains.icu',
-  'https://sergeevpavel.mesto.nomoredomains.icu',
-  'localhost:3000',
-  'http://localhost:3000',
-  'https://localhost:3000',
-];
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', true);
-  }
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  const requestHeaders = req.headers['access-control-request-headers'];
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-    return res.end();
-  }
-  return next();
-});
+app.use(cors);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -69,6 +48,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
+app.use(auth);
+
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 app.use('/', (req, res, next) => {
@@ -81,5 +62,3 @@ app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT);
-
-app.use(auth);
