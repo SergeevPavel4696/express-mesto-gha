@@ -4,7 +4,7 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const auth = (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
-    throw new UnAuthorizedError('Необходима авторизация');
+    throw new UnAuthorizedError('Необходима вторизация');
   }
   let payload;
   try {
