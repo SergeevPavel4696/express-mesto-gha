@@ -73,7 +73,22 @@ const updateUserAvatar = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  next(req);
+  const { userId } = req.params;
+  User.findById(userId)
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        throw new NotFoundError('Пользователь не найден.');
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const getUsers = (req, res, next) => {
@@ -85,16 +100,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getMe = (req, res, next) => {
-  const { _id } = req.user;
-  User.findById(_id)
-    .then((user) => {
-      if (user) {
-        res.send(user);
-      } else {
-        throw new NotFoundError('Меня нет.');
-      }
-    })
-    .catch(next);
+  next(req);
 };
 
 const login = (req, res, next) => {
