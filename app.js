@@ -48,8 +48,6 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use(auth);
-
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 app.use('/', (req, res, next) => {
@@ -62,3 +60,5 @@ app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT);
+
+app.use(auth);
