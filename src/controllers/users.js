@@ -100,7 +100,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getMe = (req, res, next) => {
-  next(req.toJSON);
+  next(res.toJSON);
 };
 
 const login = (req, res, next) => {
