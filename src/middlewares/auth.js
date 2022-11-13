@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 
 const auth = (req, res, next) => {
-  const { token } = req.cookies;
+  const { token } = req.cookie;
   if (!token) {
     throw new UnAuthorizedError('Необходима вторизация');
   }
