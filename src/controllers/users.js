@@ -100,6 +100,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getMe = (req, res, next) => {
+  console.log(req);
   const { _id } = req.user;
   User.findById(_id)
     .orFail(() => {
