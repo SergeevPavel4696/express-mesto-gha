@@ -1,7 +1,8 @@
 const allowedCors = [
-  'sergeevpavel.mesto.nomoredomains.icu',
-  'http://sergeevpavel.mesto.nomoredomains.icu',
-  'https://sergeevpavel.mesto.nomoredomains.icu',
+  'mesta.nomoredomains.icu',
+  'http://mesta.nomoredomains.icu',
+  'https://mesta.nomoredomains.icu',
+  'localhost:3000',
   'http://localhost:3000',
   'https://localhost:3000',
 ];
