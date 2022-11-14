@@ -1,11 +1,3 @@
-const allowedCors = [
-  'sergeevpavel.mesto.nomoredomains.icu',
-  'http://sergeevpavel.mesto.nomoredomains.icu',
-  'https://sergeevpavel.mesto.nomoredomains.icu',
-  'http://localhost:3000',
-  'https://localhost:3000',
-];
-
 const cors = (req, res, next) => {
   const { origin } = req.headers;
   res.header('Access-Control-Allow-Origin', "*");
