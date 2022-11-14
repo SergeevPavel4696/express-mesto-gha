@@ -122,9 +122,7 @@ const login = (req, res, next) => {
           .then((matched) => {
             if (matched) {
               const token = jwt.sign({ _id }, 'some-secret-key', { expiresIn: '7d' });
-              res.cookie('token', token, {
-                maxAge: 604800, httpOnly: true, sameSite: 'None', secure: true,
-              });
+              res.cookie('token', token, { maxAge: 604800, httpOnly: true });
               res.send({ token });
             } else {
               throw new UnAuthorizedError('Неправильные почта или пароль.');
