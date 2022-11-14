@@ -12,6 +12,7 @@ const NotFoundError = require('./src/errors/NotFoundError');
 
 const auth = require('./src/middlewares/auth');
 const errorHandler = require('./src/middlewares/errorHandler');
+const cors = require('./src/middlewares/cors');
 const { requestLogger, errorLogger } = require('./src/middlewares/logger');
 
 const { PORT = 3000 } = process.env;
@@ -19,6 +20,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
