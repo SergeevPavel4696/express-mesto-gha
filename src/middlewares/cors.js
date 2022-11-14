@@ -1,5 +1,4 @@
 const cors = (req, res, next) => {
-  const { origin } = req.headers;
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Credentials', true);
   const { method } = req;
