@@ -6,6 +6,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const AlreadyExistsError = require('../errors/AlreadyExistsError');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -121,9 +123,9 @@ const login = (req, res, next) => {
         bcrypt.compare(password, user.password)
           .then((matched) => {
             if (matched) {
-              const token = jwt.sign({ _id }, 'some-secret-key', { expiresIn: '7d' });
+              const token = jwt.sign({ _id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
               res.cookie('token', token, {
-                maxAge: 604800, httpOnly: true, sameSite: 'None', secure: true,
+                maxAge: 1000 * 3600 * 24, httpOnly: true, sameSite: 'None', secure: true,
               });
               res.send({ token });
             } else {
