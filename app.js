@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const errorHandler = require('./src/middlewares/errorHandler');
 const cors = require('./src/middlewares/cors');
 const { requestLogger, errorLogger } = require('./src/middlewares/logger');
-const router = require('./src/routes/users');
+const router = require('./src/routes/ruoter');
 
 const { PORT = 3000 } = process.env;
 const app = express();
