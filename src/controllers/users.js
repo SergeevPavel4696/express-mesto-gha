@@ -123,7 +123,7 @@ const login = (req, res, next) => {
             if (matched) {
               const token = jwt.sign({ _id }, 'some-secret-key', { expiresIn: '7d' });
               res.cookie('token', token, {
-                maxAge: 604800, httpOnly: true, sameSite: 'None', secure: true,
+                maxAge: 6000, httpOnly: true, sameSite: 'None', secure: true,
               });
               res.send({ token });
             } else {
