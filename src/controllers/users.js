@@ -139,6 +139,10 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
+const out = (req, res) => {
+  res.clearCookie('token');
+};
+
 module.exports = {
-  createUser, updateUserInfo, updateUserAvatar, getUser, getUsers, getMe, login,
+  createUser, updateUserInfo, updateUserAvatar, getUser, getUsers, getMe, login, out,
 };

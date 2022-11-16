@@ -7,7 +7,7 @@ const userRouter = require('./users');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/NotFoundError');
 
-const { login, createUser } = require('../controllers/users');
+const { login, createUser, out } = require('../controllers/users');
 
 router.get('/crash-test', () => {
   setTimeout(() => {
@@ -29,9 +29,10 @@ router.post('/signup', celebrate({
     password: Joi.string().required(),
   }),
 }), createUser);
+router.post('/signout', out);
 router.use(auth);
 router.use('/cards', cardRouter);
 router.use('/users', userRouter);
-router.use('/', (req, res, next) => { next(new NotFoundError('Некорректный адрес запроса.')); });
+router.use('*', (req, res, next) => { next(new NotFoundError('Некорректный адрес запроса.')); });
 
 module.exports = router;
