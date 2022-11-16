@@ -29,7 +29,7 @@ router.post('/signup', celebrate({
     password: Joi.string().required(),
   }),
 }), createUser);
-router.post('/signout', out);
+router.get('/signout', out);
 router.use(auth);
 router.use('/cards', cardRouter);
 router.use('/users', userRouter);
