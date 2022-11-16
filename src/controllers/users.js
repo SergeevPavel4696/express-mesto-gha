@@ -140,7 +140,7 @@ const login = (req, res, next) => {
 };
 
 const out = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token').send({ message: 'До свидания.' });
 };
 
 module.exports = {
