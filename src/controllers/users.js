@@ -5,7 +5,6 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const AlreadyExistsError = require('../errors/AlreadyExistsError');
-const getSecretKey = require('../utils/secretKey');
 
 const createUser = (req, res, next) => {
   const {
@@ -122,11 +121,8 @@ const login = (req, res, next) => {
         bcrypt.compare(password, user.password)
           .then((matched) => {
             if (matched) {
-              const key = getSecretKey();
-              const token = jwt.sign({ _id }, key, { expiresIn: '7d' });
-              res.cookie('token', token, {
-                maxAge: 1000 * 3600 * 24, httpOnly: true, sameSite: 'None', secure: true,
-              });
+              const token = jwt.sign({ _id }, 'some-secret-key', { expiresIn: '7d' });
+              res.cookie('token', token, { maxAge: 604800, httpOnly: true });
               res.send({ token });
             } else {
               throw new UnAuthorizedError('Неправильные почта или пароль.');
@@ -139,10 +135,6 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-const out = (req, res) => {
-  res.clearCookie('token').send({ message: 'До свидания.' });
-};
-
 module.exports = {
-  createUser, updateUserInfo, updateUserAvatar, getUser, getUsers, getMe, login, out,
+  createUser, updateUserInfo, updateUserAvatar, getUser, getUsers, getMe, login,
 };
